@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+    }
+    button {
+      background-color: #18A0FB;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    button:hover {
+      background-color: #0D8DE3;
+    }
+    .message {
+      padding: 10px;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+    .success {
+      background-color: #E3FCF4;
+      color: #00875A;
+    }
+    .error {
+      background-color: #FFEBE6;
+      color: #DE350B;
+    }
+  </style>
+</head>
+<body>
+  <button id="export">MCPにエクスポート</button>
+  <div id="message"></div>
+
+  <script>
+    document.getElementById('export').onclick = () => {
+      parent.postMessage({ pluginMessage: { type: 'export-to-mcp' } }, '*');
+    };
+
+    onmessage = (event) => {
+      const message = event.data.pluginMessage;
+      const messageDiv = document.getElementById('message');
+      
+      if (message.type === 'success') {
+        messageDiv.className = 'message success';
+      } else if (message.type === 'error') {
+        messageDiv.className = 'message error';
+      }
+      
+      messageDiv.textContent = message.message;
+    };
+  </script>
+</body>
+</html>
